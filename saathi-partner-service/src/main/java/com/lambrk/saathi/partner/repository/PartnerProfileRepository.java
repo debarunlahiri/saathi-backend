@@ -10,5 +10,7 @@ import java.util.Optional;
 
 public interface PartnerProfileRepository extends JpaRepository<PartnerProfile, Long> {
     Optional<PartnerProfile> findByIdentityUserId(Long identityUserId);
-    List<PartnerProfile> findByAvailabilityStatusAndKycStatus(AvailabilityStatus availabilityStatus, KycStatus kycStatus);
+
+    List<PartnerProfile> findByAvailabilityStatusAndKycStatus(AvailabilityStatus availabilityStatus,
+            KycStatus kycStatus);
 }

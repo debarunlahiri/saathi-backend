@@ -1,0 +1,3 @@
+package com.lambrk.saathi.complaint.enums;
+
+public enum ComplaintType { PAYMENT_ISSUE, PARTNER_NOT_ARRIVED, CUSTOMER_NOT_RESPONDING, WRONG_ITEM, FOOD_DAMAGED, MISBEHAVIOR, LATE_DELIVERY, FAKE_TASK, OTHER }
