@@ -1,0 +1,4 @@
+saathi:
+  jwt:
+    access-token-minutes: 120
+    refresh-token-days: 30

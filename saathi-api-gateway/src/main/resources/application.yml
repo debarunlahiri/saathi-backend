@@ -1,0 +1,66 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: saathi-api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: identity-service
+          uri: lb://saathi-identity-service
+          predicates:
+            - Path=/api/auth/**
+        - id: customer-service
+          uri: lb://saathi-customer-service
+          predicates:
+            - Path=/api/customers/**
+        - id: partner-service
+          uri: lb://saathi-partner-service
+          predicates:
+            - Path=/api/partners/**
+        - id: task-service
+          uri: lb://saathi-task-service
+          predicates:
+            - Path=/api/tasks/**
+        - id: pricing-service
+          uri: lb://saathi-pricing-service
+          predicates:
+            - Path=/api/pricing/**
+        - id: payment-service
+          uri: lb://saathi-payment-service
+          predicates:
+            - Path=/api/payments/**
+        - id: wallet-service
+          uri: lb://saathi-wallet-service
+          predicates:
+            - Path=/api/wallets/**
+        - id: chat-service
+          uri: lb://saathi-chat-service
+          predicates:
+            - Path=/api/chats/**,/ws/**
+        - id: location-service
+          uri: lb://saathi-location-service
+          predicates:
+            - Path=/api/locations/**,/ws-location/**
+        - id: notification-service
+          uri: lb://saathi-notification-service
+          predicates:
+            - Path=/api/notifications/**
+        - id: file-service
+          uri: lb://saathi-file-service
+          predicates:
+            - Path=/api/files/**
+        - id: complaint-service
+          uri: lb://saathi-complaint-service
+          predicates:
+            - Path=/api/complaints/**
+        - id: admin-service
+          uri: lb://saathi-admin-service
+          predicates:
+            - Path=/api/admin/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}

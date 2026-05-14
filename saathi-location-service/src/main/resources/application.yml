@@ -1,0 +1,17 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: saathi-location-service
+  datasource:
+    url: ${LOCATION_DB_URL:jdbc:postgresql://localhost:5432/saathi_location}
+    username: ${POSTGRES_USER:saathi}
+    password: ${POSTGRES_PASSWORD:saathi}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}

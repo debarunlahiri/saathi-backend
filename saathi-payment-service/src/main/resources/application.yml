@@ -1,0 +1,17 @@
+server:
+  port: 8087
+spring:
+  application:
+    name: saathi-payment-service
+  datasource:
+    url: ${PAYMENT_DB_URL:jdbc:postgresql://localhost:5432/saathi_payment}
+    username: ${POSTGRES_USER:saathi}
+    password: ${POSTGRES_PASSWORD:saathi}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}

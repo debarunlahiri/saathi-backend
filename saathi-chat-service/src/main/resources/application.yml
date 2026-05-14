@@ -1,0 +1,12 @@
+server:
+  port: 8089
+spring:
+  application:
+    name: saathi-chat-service
+  data:
+    mongodb:
+      uri: ${CHAT_MONGODB_URI:mongodb://localhost:27017/saathi_chat}
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
