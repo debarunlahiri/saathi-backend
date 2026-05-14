@@ -1,0 +1,15 @@
+package com.lambrk.saathi.task.enums;
+
+public enum TaskStatus {
+    CREATED,
+    SEARCHING_PARTNER,
+    PARTNER_ASSIGNED,
+    PARTNER_ON_WAY,
+    PARTNER_REACHED,
+    TASK_STARTED,
+    TASK_IN_PROGRESS,
+    TASK_COMPLETED,
+    PAYMENT_COMPLETED,
+    CANCELLED,
+    DISPUTED
+}
