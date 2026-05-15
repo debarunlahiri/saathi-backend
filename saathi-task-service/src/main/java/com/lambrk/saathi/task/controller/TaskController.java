@@ -50,6 +50,11 @@ public class TaskController {
         return ApiResponse.success("Task accepted successfully", taskService.accept(taskId, request));
     }
 
+    @PostMapping("/{taskId}/assign")
+    public ApiResponse<Task> assignNearest(@PathVariable Long taskId) {
+        return ApiResponse.success("Task assigned successfully", taskService.assignNearest(taskId));
+    }
+
     @PutMapping("/{taskId}/status")
     public ApiResponse<Task> updateStatus(@PathVariable Long taskId, @Valid @RequestBody TaskStatusRequest request) {
         return ApiResponse.success("Task status updated successfully", taskService.updateStatus(taskId, request));

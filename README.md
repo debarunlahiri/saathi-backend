@@ -37,6 +37,14 @@ mvn test
 mvn package -DskipTests
 ```
 
+## API Documentation
+
+Category-wise REST API documentation with endpoint names, curl commands, full request examples, and full response examples is available at:
+
+```text
+docs/api/README.md
+```
+
 ## Docker Compose
 
 ```bash

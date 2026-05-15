@@ -14,6 +14,7 @@ import com.lambrk.saathi.task.client.PricingClient;
 import com.lambrk.saathi.task.client.WalletClient;
 import com.lambrk.saathi.task.repository.TaskRepository;
 import com.lambrk.saathi.task.repository.TaskStatusHistoryRepository;
+import com.lambrk.saathi.task.strategy.NearestPartnerAssignmentStrategy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,7 @@ public class TaskApplicationService {
     private final ChatClient chatClient;
     private final NotificationClient notificationClient;
     private final WalletClient walletClient;
+    private final NearestPartnerAssignmentStrategy assignmentStrategy;
 
     public TaskApplicationService(TaskRepository taskRepository,
                                   TaskStatusHistoryRepository historyRepository,
@@ -40,7 +42,8 @@ public class TaskApplicationService {
                                   PartnerClient partnerClient,
                                   ChatClient chatClient,
                                   NotificationClient notificationClient,
-                                  WalletClient walletClient) {
+                                  WalletClient walletClient,
+                                  NearestPartnerAssignmentStrategy assignmentStrategy) {
         this.taskRepository = taskRepository;
         this.historyRepository = historyRepository;
         this.pricingClient = pricingClient;
@@ -49,6 +52,7 @@ public class TaskApplicationService {
         this.chatClient = chatClient;
         this.notificationClient = notificationClient;
         this.walletClient = walletClient;
+        this.assignmentStrategy = assignmentStrategy;
     }
 
     @Transactional
@@ -117,6 +121,13 @@ public class TaskApplicationService {
         notificationClient.notifyUser(task.getCustomerId(), "Partner assigned", "A partner accepted your task", "TASK_ACCEPTED", task.getId().toString());
         notificationClient.notifyUser(request.partnerId(), "Task accepted", "You accepted a task", "TASK_ACCEPTED", task.getId().toString());
         return task;
+    }
+
+    @Transactional
+    public Task assignNearest(Long taskId) {
+        Long partnerId = assignmentStrategy.assignPartner(taskId)
+                .orElseThrow(() -> new IllegalStateException("No eligible partner available for this task"));
+        return accept(taskId, new AcceptTaskRequest(partnerId));
     }
 
     @Transactional
