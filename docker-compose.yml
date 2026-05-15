@@ -10,6 +10,12 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U saathi -d saathi"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   mongodb:
     image: mongo:7
@@ -18,7 +24,292 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  saathi-service-discovery:
+    build:
+      context: ./saathi-service-discovery
+    container_name: saathi-service-discovery
+    ports:
+      - "8761:8761"
+
+  saathi-config-server:
+    build:
+      context: ./saathi-config-server
+    container_name: saathi-config-server
+    environment:
+      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS: file:/config-repo
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./config-repo:/config-repo:ro
+
+  saathi-api-gateway:
+    build:
+      context: ./saathi-api-gateway
+    container_name: saathi-api-gateway
+    environment:
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+      JWT_SECRET: ${JWT_SECRET:-saathi-local-development-jwt-secret-key-change-before-production}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - saathi-service-discovery
+
+  saathi-identity-service:
+    build:
+      context: ./saathi-identity-service
+    container_name: saathi-identity-service
+    environment:
+      IDENTITY_DB_URL: jdbc:postgresql://postgres:5432/saathi_identity
+      DB_USERNAME: saathi
+      DB_PASSWORD: saathi
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+      JWT_SECRET: ${JWT_SECRET:-saathi-local-development-jwt-secret-key-change-before-production}
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-customer-service:
+    build:
+      context: ./saathi-customer-service
+    container_name: saathi-customer-service
+    environment:
+      CUSTOMER_DB_URL: jdbc:postgresql://postgres:5432/saathi_customer
+      DB_USERNAME: saathi
+      DB_PASSWORD: saathi
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+    ports:
+      - "8082:8082"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-partner-service:
+    build:
+      context: ./saathi-partner-service
+    container_name: saathi-partner-service
+    environment:
+      PARTNER_DB_URL: jdbc:postgresql://postgres:5432/saathi_partner
+      DB_USERNAME: saathi
+      DB_PASSWORD: saathi
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+    ports:
+      - "8083:8083"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-service-catalog-service:
+    build:
+      context: ./saathi-service-catalog-service
+    container_name: saathi-service-catalog-service
+    environment:
+      CATALOG_DB_URL: jdbc:postgresql://postgres:5432/saathi_catalog
+      DB_USERNAME: saathi
+      DB_PASSWORD: saathi
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+    ports:
+      - "8084:8084"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-task-service:
+    build:
+      context: ./saathi-task-service
+    container_name: saathi-task-service
+    environment:
+      TASK_DB_URL: jdbc:postgresql://postgres:5432/saathi_task
+      DB_USERNAME: saathi
+      DB_PASSWORD: saathi
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+    ports:
+      - "8085:8085"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-pricing-service:
+    build:
+      context: ./saathi-pricing-service
+    container_name: saathi-pricing-service
+    environment:
+      PRICING_DB_URL: jdbc:postgresql://postgres:5432/saathi_pricing
+      DB_USERNAME: saathi
+      DB_PASSWORD: saathi
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+    ports:
+      - "8086:8086"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-payment-service:
+    build:
+      context: ./saathi-payment-service
+    container_name: saathi-payment-service
+    environment:
+      PAYMENT_DB_URL: jdbc:postgresql://postgres:5432/saathi_payment
+      DB_USERNAME: saathi
+      DB_PASSWORD: saathi
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+    ports:
+      - "8087:8087"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-wallet-service:
+    build:
+      context: ./saathi-wallet-service
+    container_name: saathi-wallet-service
+    environment:
+      WALLET_DB_URL: jdbc:postgresql://postgres:5432/saathi_wallet
+      DB_USERNAME: saathi
+      DB_PASSWORD: saathi
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+    ports:
+      - "8088:8088"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-chat-service:
+    build:
+      context: ./saathi-chat-service
+    container_name: saathi-chat-service
+    environment:
+      CHAT_MONGODB_URI: mongodb://mongodb:27017/saathi_chat
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+    ports:
+      - "8089:8089"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-location-service:
+    build:
+      context: ./saathi-location-service
+    container_name: saathi-location-service
+    environment:
+      LOCATION_DB_URL: jdbc:postgresql://postgres:5432/saathi_location
+      DB_USERNAME: saathi
+      DB_PASSWORD: saathi
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+    ports:
+      - "8090:8090"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-notification-service:
+    build:
+      context: ./saathi-notification-service
+    container_name: saathi-notification-service
+    environment:
+      NOTIFICATION_DB_URL: jdbc:postgresql://postgres:5432/saathi_notification
+      DB_USERNAME: saathi
+      DB_PASSWORD: saathi
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+    ports:
+      - "8091:8091"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-file-service:
+    build:
+      context: ./saathi-file-service
+    container_name: saathi-file-service
+    environment:
+      FILE_DB_URL: jdbc:postgresql://postgres:5432/saathi_file
+      DB_USERNAME: saathi
+      DB_PASSWORD: saathi
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+      FILE_STORAGE_BASE_PATH: /data/files
+    ports:
+      - "8092:8092"
+    volumes:
+      - file_data:/data/files
+    depends_on:
+      postgres:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-complaint-service:
+    build:
+      context: ./saathi-complaint-service
+    container_name: saathi-complaint-service
+    environment:
+      COMPLAINT_DB_URL: jdbc:postgresql://postgres:5432/saathi_complaint
+      DB_USERNAME: saathi
+      DB_PASSWORD: saathi
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+    ports:
+      - "8093:8093"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      saathi-service-discovery:
+        condition: service_started
+
+  saathi-admin-service:
+    build:
+      context: ./saathi-admin-service
+    container_name: saathi-admin-service
+    environment:
+      EUREKA_SERVER_URL: http://saathi-service-discovery:8761/eureka
+      CONFIG_SERVER_URL: http://saathi-config-server:8888
+    ports:
+      - "8094:8094"
+    depends_on:
+      - saathi-service-discovery
 
 volumes:
   postgres_data:
   mongo_data:
+  file_data:

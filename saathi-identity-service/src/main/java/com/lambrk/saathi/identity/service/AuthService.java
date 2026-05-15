@@ -3,6 +3,7 @@ package com.lambrk.saathi.identity.service;
 import com.lambrk.saathi.identity.dto.request.LoginRequest;
 import com.lambrk.saathi.identity.dto.request.RegisterRequest;
 import com.lambrk.saathi.identity.dto.response.AuthResponse;
+import com.lambrk.saathi.identity.client.ProfileProvisioningClient;
 import com.lambrk.saathi.identity.entity.User;
 import com.lambrk.saathi.identity.enums.UserRole;
 import com.lambrk.saathi.identity.repository.UserRepository;
@@ -15,11 +16,16 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final ProfileProvisioningClient profileProvisioningClient;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public AuthService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService,
+                       ProfileProvisioningClient profileProvisioningClient) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.profileProvisioningClient = profileProvisioningClient;
     }
 
     public AuthResponse register(RegisterRequest request, UserRole role) {
@@ -33,6 +39,11 @@ public class AuthService {
         user.setPasswordHash(passwordEncoder.encode(request.password()));
         user.setRole(role);
         user = userRepository.save(user);
+        if (role == UserRole.CUSTOMER) {
+            profileProvisioningClient.createCustomerProfile(user);
+        } else if (role == UserRole.PARTNER) {
+            profileProvisioningClient.createPartnerProfile(user);
+        }
         return response(user);
     }
 

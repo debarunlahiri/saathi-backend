@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: saathi-notification-service
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}
   datasource:
     url: ${NOTIFICATION_DB_URL:jdbc:postgresql://localhost:5432/saathi_notification}
     username: ${POSTGRES_USER:saathi}

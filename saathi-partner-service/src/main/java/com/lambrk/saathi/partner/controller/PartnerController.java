@@ -48,4 +48,22 @@ public class PartnerController {
     public ApiResponse<List<PartnerProfile>> availablePartners() {
         return ApiResponse.success("Available partners fetched successfully", partnerService.availablePartners());
     }
+
+    @GetMapping("/admin/counts/pending-kyc")
+    public ApiResponse<Long> pendingKycCount() {
+        return ApiResponse.success("Pending KYC count fetched successfully", partnerService.pendingKycCount());
+    }
+
+    @PutMapping("/admin/{partnerId}/kyc/approve")
+    public ApiResponse<PartnerProfile> approveKyc(@PathVariable Long partnerId) {
+        return ApiResponse.success("Partner KYC approved successfully", partnerService.approveKyc(partnerId));
+    }
+
+    @PutMapping("/admin/{partnerId}/kyc/reject")
+    public ApiResponse<PartnerProfile> rejectKyc(@PathVariable Long partnerId, @RequestBody RejectKycRequest request) {
+        return ApiResponse.success("Partner KYC rejected successfully", partnerService.rejectKyc(partnerId, request.reason()));
+    }
+
+    public record RejectKycRequest(String reason) {
+    }
 }

@@ -3,6 +3,7 @@ package com.lambrk.saathi.complaint.service;
 import com.lambrk.saathi.complaint.dto.CreateComplaintRequest;
 import com.lambrk.saathi.complaint.dto.UpdateComplaintStatusRequest;
 import com.lambrk.saathi.complaint.entity.Complaint;
+import com.lambrk.saathi.complaint.enums.ComplaintStatus;
 import com.lambrk.saathi.complaint.repository.ComplaintRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class ComplaintService {
     }
     public List<Complaint> mine(Long raisedBy) { return repository.findByRaisedByOrderByIdDesc(raisedBy); }
     public List<Complaint> all() { return repository.findAll(); }
+    public long openCount() { return repository.countByStatus(ComplaintStatus.OPEN); }
     @Transactional public Complaint updateStatus(Long id, UpdateComplaintStatusRequest request) {
         Complaint complaint = repository.findById(id).orElseThrow();
         complaint.setStatus(request.status());

@@ -13,4 +13,6 @@ public interface PartnerProfileRepository extends JpaRepository<PartnerProfile, 
 
     List<PartnerProfile> findByAvailabilityStatusAndKycStatus(AvailabilityStatus availabilityStatus,
             KycStatus kycStatus);
+
+    long countByKycStatus(KycStatus kycStatus);
 }

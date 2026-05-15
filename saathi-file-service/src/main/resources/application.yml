@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: saathi-file-service
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}
   datasource:
     url: ${FILE_DB_URL:jdbc:postgresql://localhost:5432/saathi_file}
     username: ${POSTGRES_USER:saathi}

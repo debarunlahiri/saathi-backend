@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: saathi-api-gateway
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}
   cloud:
     gateway:
       routes:
@@ -23,6 +25,10 @@ spring:
           uri: lb://saathi-task-service
           predicates:
             - Path=/api/tasks/**
+        - id: service-catalog-service
+          uri: lb://saathi-service-catalog-service
+          predicates:
+            - Path=/api/catalog/**
         - id: pricing-service
           uri: lb://saathi-pricing-service
           predicates:
@@ -64,3 +70,7 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+
+saathi:
+  jwt:
+    secret: ${JWT_SECRET:change-this-local-development-secret-key-change-this}

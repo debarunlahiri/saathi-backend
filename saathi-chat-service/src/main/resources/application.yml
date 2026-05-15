@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: saathi-chat-service
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}
   data:
     mongodb:
       uri: ${CHAT_MONGODB_URI:mongodb://localhost:27017/saathi_chat}

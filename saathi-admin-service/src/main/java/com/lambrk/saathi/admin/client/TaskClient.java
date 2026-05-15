@@ -1,8 +1,24 @@
 package com.lambrk.saathi.admin.client;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
+
+import java.util.Map;
 
 @Component
 public class TaskClient {
-    public long activeTasks() { return 0; }
+    private final RestClient restClient;
+
+    public TaskClient(RestClient.Builder restClientBuilder) {
+        this.restClient = restClientBuilder.baseUrl("http://saathi-task-service").build();
+    }
+
+    public long activeTasks() {
+        return count("/api/tasks/admin/counts/active");
+    }
+
+    private long count(String uri) {
+        Map<String, Object> response = restClient.get().uri(uri).retrieve().body(Map.class);
+        return Long.parseLong(response.get("data").toString());
+    }
 }

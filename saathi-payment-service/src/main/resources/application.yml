@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: saathi-payment-service
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}
   datasource:
     url: ${PAYMENT_DB_URL:jdbc:postgresql://localhost:5432/saathi_payment}
     username: ${POSTGRES_USER:saathi}

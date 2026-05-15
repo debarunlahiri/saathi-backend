@@ -72,4 +72,27 @@ public class PartnerService {
     public List<PartnerProfile> availablePartners() {
         return partnerRepository.findByAvailabilityStatusAndKycStatus(AvailabilityStatus.ONLINE, KycStatus.APPROVED);
     }
+
+    public long pendingKycCount() {
+        return partnerRepository.countByKycStatus(KycStatus.PENDING);
+    }
+
+    @Transactional
+    public PartnerProfile approveKyc(Long partnerId) {
+        PartnerProfile partner = get(partnerId);
+        PartnerKyc kyc = kycRepository.findByPartnerId(partnerId).orElseThrow();
+        kyc.setStatus(KycStatus.APPROVED);
+        partner.setKycStatus(KycStatus.APPROVED);
+        return partner;
+    }
+
+    @Transactional
+    public PartnerProfile rejectKyc(Long partnerId, String reason) {
+        PartnerProfile partner = get(partnerId);
+        PartnerKyc kyc = kycRepository.findByPartnerId(partnerId).orElseThrow();
+        kyc.setStatus(KycStatus.REJECTED);
+        kyc.setRejectionReason(reason);
+        partner.setKycStatus(KycStatus.REJECTED);
+        return partner;
+    }
 }

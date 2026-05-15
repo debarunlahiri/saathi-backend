@@ -54,4 +54,9 @@ public class TaskController {
     public ApiResponse<Task> updateStatus(@PathVariable Long taskId, @Valid @RequestBody TaskStatusRequest request) {
         return ApiResponse.success("Task status updated successfully", taskService.updateStatus(taskId, request));
     }
+
+    @GetMapping("/admin/counts/active")
+    public ApiResponse<Long> activeTaskCount() {
+        return ApiResponse.success("Active task count fetched successfully", taskService.activeTaskCount());
+    }
 }

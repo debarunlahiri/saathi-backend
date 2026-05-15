@@ -1,0 +1,12 @@
+create database saathi_identity;
+create database saathi_customer;
+create database saathi_partner;
+create database saathi_catalog;
+create database saathi_task;
+create database saathi_pricing;
+create database saathi_payment;
+create database saathi_wallet;
+create database saathi_location;
+create database saathi_notification;
+create database saathi_file;
+create database saathi_complaint;

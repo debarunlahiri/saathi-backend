@@ -18,5 +18,6 @@ public class ComplaintController {
     @PostMapping public ApiResponse<Complaint> create(@Valid @RequestBody CreateComplaintRequest request) { return ApiResponse.success("Complaint created successfully", service.create(request)); }
     @GetMapping("/users/{raisedBy}") public ApiResponse<List<Complaint>> mine(@PathVariable Long raisedBy) { return ApiResponse.success("Complaints fetched successfully", service.mine(raisedBy)); }
     @GetMapping public ApiResponse<List<Complaint>> all() { return ApiResponse.success("Complaints fetched successfully", service.all()); }
+    @GetMapping("/admin/counts/open") public ApiResponse<Long> openCount() { return ApiResponse.success("Open complaint count fetched successfully", service.openCount()); }
     @PutMapping("/{id}/status") public ApiResponse<Complaint> updateStatus(@PathVariable Long id, @Valid @RequestBody UpdateComplaintStatusRequest request) { return ApiResponse.success("Complaint updated successfully", service.updateStatus(id, request)); }
 }
