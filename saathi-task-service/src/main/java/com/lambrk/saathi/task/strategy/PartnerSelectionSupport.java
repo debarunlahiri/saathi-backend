@@ -6,18 +6,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 final class PartnerSelectionSupport {
   private PartnerSelectionSupport() {}
 
-  static Optional<Long> firstAvailable(List<Map<String, Object>> partners) {
+  static Optional<UUID> firstAvailable(List<Map<String, Object>> partners) {
     return partners.stream()
         .map(PartnerSelectionSupport::partnerId)
         .flatMap(Optional::stream)
         .findFirst();
   }
 
-  static Optional<Long> nearest(Task task, List<Map<String, Object>> partners) {
+  static Optional<UUID> nearest(Task task, List<Map<String, Object>> partners) {
     BigDecimal taskLatitude = task.getPickupLatitude();
     BigDecimal taskLongitude = task.getPickupLongitude();
     if (taskLatitude == null || taskLongitude == null) {
@@ -32,7 +33,7 @@ final class PartnerSelectionSupport {
         .map(Candidate::partnerId);
   }
 
-  static Optional<Long> highestRated(Task task, List<Map<String, Object>> partners) {
+  static Optional<UUID> highestRated(Task task, List<Map<String, Object>> partners) {
     BigDecimal taskLatitude = task.getPickupLatitude();
     BigDecimal taskLongitude = task.getPickupLongitude();
 
@@ -52,7 +53,7 @@ final class PartnerSelectionSupport {
 
   private static Optional<Candidate> candidate(
       double taskLatitude, double taskLongitude, Map<String, Object> partner) {
-    Optional<Long> partnerId = partnerId(partner);
+    Optional<UUID> partnerId = partnerId(partner);
     Optional<Double> partnerLatitude = decimal(partner.get("currentLatitude"));
     Optional<Double> partnerLongitude = decimal(partner.get("currentLongitude"));
     if (partnerId.isEmpty() || partnerLatitude.isEmpty() || partnerLongitude.isEmpty()) {
@@ -64,15 +65,12 @@ final class PartnerSelectionSupport {
     return Optional.of(new Candidate(partnerId.get(), distanceKm, serviceRadiusKm));
   }
 
-  private static Optional<Long> partnerId(Map<String, Object> partner) {
+  private static Optional<UUID> partnerId(Map<String, Object> partner) {
     Object id = partner.get("id");
-    if (id instanceof Number number) {
-      return Optional.of(number.longValue());
-    }
     if (id instanceof String value && !value.isBlank()) {
       try {
-        return Optional.of(Long.parseLong(value));
-      } catch (NumberFormatException ignored) {
+        return Optional.of(UUID.fromString(value));
+      } catch (IllegalArgumentException ignored) {
         return Optional.empty();
       }
     }
@@ -123,7 +121,7 @@ final class PartnerSelectionSupport {
     return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
 
-  private record Candidate(Long partnerId, double distanceKm, double serviceRadiusKm) {
+  private record Candidate(UUID partnerId, double distanceKm, double serviceRadiusKm) {
     boolean insideServiceRadius() {
       return distanceKm <= serviceRadiusKm;
     }

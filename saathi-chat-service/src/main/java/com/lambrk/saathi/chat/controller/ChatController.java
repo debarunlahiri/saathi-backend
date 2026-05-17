@@ -7,6 +7,7 @@ import com.lambrk.saathi.chat.dto.CreateRoomRequest;
 import com.lambrk.saathi.chat.service.ChatService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +25,7 @@ public class ChatController {
   }
 
   @GetMapping("/rooms/{taskId}")
-  public ApiResponse<ChatRoom> room(@PathVariable Long taskId) {
+  public ApiResponse<ChatRoom> room(@PathVariable UUID taskId) {
     return ApiResponse.success("Chat room fetched successfully", chatService.room(taskId));
   }
 

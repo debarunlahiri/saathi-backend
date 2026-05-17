@@ -4,13 +4,14 @@ import com.lambrk.saathi.identity.enums.AccountStatus;
 import com.lambrk.saathi.identity.enums.UserRole;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 public class User {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
   @Column(name = "full_name", nullable = false)
   private String fullName;
@@ -38,6 +39,13 @@ public class User {
   private Instant updatedAt;
 
   @PrePersist
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
+  }
+
+  @PrePersist
   void prePersist() {
     createdAt = Instant.now();
     updatedAt = createdAt;
@@ -48,7 +56,7 @@ public class User {
     updatedAt = Instant.now();
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 

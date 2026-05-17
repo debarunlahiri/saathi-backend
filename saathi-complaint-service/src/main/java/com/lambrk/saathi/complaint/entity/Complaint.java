@@ -4,19 +4,20 @@ import com.lambrk.saathi.complaint.enums.ComplaintStatus;
 import com.lambrk.saathi.complaint.enums.ComplaintType;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "complaints")
 public class Complaint {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
   @Column(name = "task_id")
-  private Long taskId;
+  private UUID taskId;
 
   @Column(name = "raised_by", nullable = false)
-  private Long raisedBy;
+  private UUID raisedBy;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "complaint_type", nullable = false)
@@ -39,7 +40,10 @@ public class Complaint {
   private Instant updatedAt;
 
   @PrePersist
-  void prePersist() {
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
     createdAt = Instant.now();
     updatedAt = createdAt;
   }
@@ -49,23 +53,23 @@ public class Complaint {
     updatedAt = Instant.now();
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public Long getTaskId() {
+  public UUID getTaskId() {
     return taskId;
   }
 
-  public void setTaskId(Long taskId) {
+  public void setTaskId(UUID taskId) {
     this.taskId = taskId;
   }
 
-  public Long getRaisedBy() {
+  public UUID getRaisedBy() {
     return raisedBy;
   }
 
-  public void setRaisedBy(Long raisedBy) {
+  public void setRaisedBy(UUID raisedBy) {
     this.raisedBy = raisedBy;
   }
 

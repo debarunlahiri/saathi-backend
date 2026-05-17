@@ -4,6 +4,7 @@ import com.lambrk.saathi.location.dto.LocationUpdateRequest;
 import com.lambrk.saathi.location.entity.LocationEvent;
 import com.lambrk.saathi.location.repository.LocationEventRepository;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,11 +25,11 @@ public class LocationService {
     return repository.save(event);
   }
 
-  public LocationEvent latest(Long taskId) {
+  public LocationEvent latest(UUID taskId) {
     return repository.findFirstByTaskIdOrderByCreatedAtDesc(taskId).orElseThrow();
   }
 
-  public List<LocationEvent> history(Long taskId) {
+  public List<LocationEvent> history(UUID taskId) {
     return repository.findByTaskIdOrderByCreatedAtDesc(taskId);
   }
 }

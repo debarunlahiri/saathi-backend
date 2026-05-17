@@ -5,6 +5,7 @@ import com.lambrk.saathi.task.entity.Task;
 import com.lambrk.saathi.task.enums.TaskStatus;
 import com.lambrk.saathi.task.repository.TaskRepository;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,7 +19,7 @@ public class ManualAssignmentStrategy implements AssignmentStrategy {
   }
 
   @Override
-  public Optional<Long> assignPartner(Long taskId) {
+  public Optional<UUID> assignPartner(UUID taskId) {
     Task task = taskRepository.findById(taskId).orElseThrow();
     if (task.getTaskStatus() != TaskStatus.SEARCHING_PARTNER) {
       return Optional.empty();

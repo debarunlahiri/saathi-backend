@@ -17,6 +17,7 @@ import com.lambrk.saathi.task.repository.TaskStatusHistoryRepository;
 import com.lambrk.saathi.task.strategy.NearestPartnerAssignmentStrategy;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,15 +86,15 @@ public class TaskApplicationService {
     return task;
   }
 
-  public Task get(Long taskId) {
+  public Task get(UUID taskId) {
     return taskRepository.findById(taskId).orElseThrow();
   }
 
-  public List<Task> customerTasks(Long customerId) {
+  public List<Task> customerTasks(UUID customerId) {
     return taskRepository.findByCustomerIdOrderByCreatedAtDesc(customerId);
   }
 
-  public List<Task> partnerTasks(Long partnerId) {
+  public List<Task> partnerTasks(UUID partnerId) {
     return taskRepository.findByPartnerIdOrderByCreatedAtDesc(partnerId);
   }
 
@@ -113,7 +114,7 @@ public class TaskApplicationService {
   }
 
   @Transactional
-  public Task accept(Long taskId, AcceptTaskRequest request) {
+  public Task accept(UUID taskId, AcceptTaskRequest request) {
     partnerClient.ensurePartnerCanAccept(request.partnerId());
     Task task = get(taskId);
     if (task.getPartnerId() != null || task.getTaskStatus() != TaskStatus.SEARCHING_PARTNER) {
@@ -145,8 +146,8 @@ public class TaskApplicationService {
   }
 
   @Transactional
-  public Task assignNearest(Long taskId) {
-    Long partnerId =
+  public Task assignNearest(UUID taskId) {
+    UUID partnerId =
         assignmentStrategy
             .assignPartner(taskId)
             .orElseThrow(
@@ -155,7 +156,7 @@ public class TaskApplicationService {
   }
 
   @Transactional
-  public Task updateStatus(Long taskId, TaskStatusRequest request) {
+  public Task updateStatus(UUID taskId, TaskStatusRequest request) {
     Task task = get(taskId);
     TaskStatus oldStatus = task.getTaskStatus();
     task.setTaskStatus(request.status());
@@ -186,7 +187,7 @@ public class TaskApplicationService {
   }
 
   private void history(
-      Long taskId, TaskStatus oldStatus, TaskStatus newStatus, Long changedBy, String remarks) {
+      UUID taskId, TaskStatus oldStatus, TaskStatus newStatus, UUID changedBy, String remarks) {
     TaskStatusHistory history = new TaskStatusHistory();
     history.setTaskId(taskId);
     history.setOldStatus(oldStatus);

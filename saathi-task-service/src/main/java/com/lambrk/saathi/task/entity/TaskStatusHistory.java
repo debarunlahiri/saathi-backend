@@ -3,16 +3,17 @@ package com.lambrk.saathi.task.entity;
 import com.lambrk.saathi.task.enums.TaskStatus;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "task_status_history")
 public class TaskStatusHistory {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
-  @Column(name = "task_id", nullable = false)
-  private Long taskId;
+  @Column(name = "task_id", nullable = false, columnDefinition = "uuid")
+  private UUID taskId;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "old_status")
@@ -22,8 +23,8 @@ public class TaskStatusHistory {
   @Column(name = "new_status", nullable = false)
   private TaskStatus newStatus;
 
-  @Column(name = "changed_by")
-  private Long changedBy;
+  @Column(name = "changed_by", columnDefinition = "uuid")
+  private UUID changedBy;
 
   private String remarks;
 
@@ -32,10 +33,17 @@ public class TaskStatusHistory {
 
   @PrePersist
   void prePersist() {
+    generateId();
     createdAt = Instant.now();
   }
 
-  public void setTaskId(Long taskId) {
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
+  }
+
+  public void setTaskId(UUID taskId) {
     this.taskId = taskId;
   }
 
@@ -47,7 +55,7 @@ public class TaskStatusHistory {
     this.newStatus = newStatus;
   }
 
-  public void setChangedBy(Long changedBy) {
+  public void setChangedBy(UUID changedBy) {
     this.changedBy = changedBy;
   }
 

@@ -1,7 +1,8 @@
 package com.lambrk.saathi.task.strategy;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface AssignmentStrategy {
-  Optional<Long> assignPartner(Long taskId);
+  Optional<UUID> assignPartner(UUID taskId);
 }

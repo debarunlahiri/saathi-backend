@@ -1,5 +1,5 @@
 create table if not exists users (
-    id bigserial primary key,
+    id uuid primary key,
     full_name varchar(150) not null,
     mobile_number varchar(20) not null unique,
     email varchar(150),

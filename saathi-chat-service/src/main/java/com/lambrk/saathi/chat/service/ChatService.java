@@ -9,6 +9,7 @@ import com.lambrk.saathi.chat.repository.ChatMessageRepository;
 import com.lambrk.saathi.chat.repository.ChatRoomRepository;
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,7 +38,7 @@ public class ChatService {
             });
   }
 
-  public ChatRoom room(Long taskId) {
+  public ChatRoom room(UUID taskId) {
     return roomRepository.findByTaskId(taskId).orElseThrow();
   }
 
@@ -59,7 +60,7 @@ public class ChatService {
     return messageRepository.save(message);
   }
 
-  public List<ChatMessage> markAsDelivered(String roomId, Long userId) {
+  public List<ChatMessage> markAsDelivered(String roomId, UUID userId) {
     List<ChatMessage> messages =
         messageRepository.findByRoomIdAndSenderIdNotAndDeliveredAtIsNull(roomId, userId);
     messages.forEach(

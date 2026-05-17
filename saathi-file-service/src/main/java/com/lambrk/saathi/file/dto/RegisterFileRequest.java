@@ -1,9 +1,10 @@
 package com.lambrk.saathi.file.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
 
 public record RegisterFileRequest(
-    Long ownerUserId,
+    UUID ownerUserId,
     String referenceType,
     String referenceId,
     @NotBlank String fileName,

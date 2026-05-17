@@ -4,19 +4,20 @@ import com.lambrk.saathi.payment.enums.PaymentStatus;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "payments")
 public class Payment {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
   @Column(name = "task_id", nullable = false)
-  private Long taskId;
+  private UUID taskId;
 
   @Column(name = "customer_id", nullable = false)
-  private Long customerId;
+  private UUID customerId;
 
   @Column(nullable = false, precision = 10, scale = 2)
   private BigDecimal amount;
@@ -41,27 +42,30 @@ public class Payment {
   private Instant createdAt;
 
   @PrePersist
-  void prePersist() {
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
     createdAt = Instant.now();
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public Long getTaskId() {
+  public UUID getTaskId() {
     return taskId;
   }
 
-  public void setTaskId(Long taskId) {
+  public void setTaskId(UUID taskId) {
     this.taskId = taskId;
   }
 
-  public Long getCustomerId() {
+  public UUID getCustomerId() {
     return customerId;
   }
 
-  public void setCustomerId(Long customerId) {
+  public void setCustomerId(UUID customerId) {
     this.customerId = customerId;
   }
 

@@ -3,6 +3,7 @@ package com.lambrk.saathi.catalog.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(
@@ -10,8 +11,8 @@ import java.time.Instant;
     indexes = @Index(name = "idx_service_category_code", columnList = "code", unique = true))
 public class ServiceCategory {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
   @Column(nullable = false)
   private String name;
@@ -34,10 +35,17 @@ public class ServiceCategory {
 
   @PrePersist
   void prePersist() {
+    generateId();
     createdAt = Instant.now();
   }
 
-  public Long getId() {
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
+  }
+
+  public UUID getId() {
     return id;
   }
 

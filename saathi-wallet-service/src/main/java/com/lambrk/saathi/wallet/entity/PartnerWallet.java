@@ -3,6 +3,7 @@ package com.lambrk.saathi.wallet.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(
@@ -10,11 +11,11 @@ import java.time.Instant;
     indexes = @Index(name = "idx_wallet_partner", columnList = "partner_id", unique = true))
 public class PartnerWallet {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
   @Column(name = "partner_id", nullable = false, unique = true)
-  private Long partnerId;
+  private UUID partnerId;
 
   @Column(name = "available_balance", precision = 12, scale = 2)
   private BigDecimal availableBalance = BigDecimal.ZERO;
@@ -32,20 +33,27 @@ public class PartnerWallet {
   private Instant updatedAt;
 
   @PrePersist
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
+    touch();
+  }
+
   @PreUpdate
   void touch() {
     updatedAt = Instant.now();
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public Long getPartnerId() {
+  public UUID getPartnerId() {
     return partnerId;
   }
 
-  public void setPartnerId(Long partnerId) {
+  public void setPartnerId(UUID partnerId) {
     this.partnerId = partnerId;
   }
 

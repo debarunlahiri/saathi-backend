@@ -8,6 +8,7 @@ import com.lambrk.saathi.partner.enums.KycStatus;
 import com.lambrk.saathi.partner.repository.PartnerKycRepository;
 import com.lambrk.saathi.partner.repository.PartnerProfileRepository;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,12 +39,12 @@ public class PartnerService {
     return partnerRepository.save(partner);
   }
 
-  public PartnerProfile get(Long partnerId) {
+  public PartnerProfile get(UUID partnerId) {
     return partnerRepository.findById(partnerId).orElseThrow();
   }
 
   @Transactional
-  public PartnerKyc submitKyc(Long partnerId, KycRequest request) {
+  public PartnerKyc submitKyc(UUID partnerId, KycRequest request) {
     PartnerProfile partner = get(partnerId);
     PartnerKyc kyc = kycRepository.findByPartnerId(partnerId).orElseGet(PartnerKyc::new);
     kyc.setPartner(partner);
@@ -58,14 +59,14 @@ public class PartnerService {
   }
 
   @Transactional
-  public PartnerProfile availability(Long partnerId, AvailabilityRequest request) {
+  public PartnerProfile availability(UUID partnerId, AvailabilityRequest request) {
     PartnerProfile partner = get(partnerId);
     partner.setAvailabilityStatus(request.availabilityStatus());
     return partner;
   }
 
   @Transactional
-  public PartnerProfile location(Long partnerId, LocationRequest request) {
+  public PartnerProfile location(UUID partnerId, LocationRequest request) {
     PartnerProfile partner = get(partnerId);
     partner.setCurrentLatitude(request.latitude());
     partner.setCurrentLongitude(request.longitude());
@@ -82,7 +83,7 @@ public class PartnerService {
   }
 
   @Transactional
-  public PartnerProfile approveKyc(Long partnerId) {
+  public PartnerProfile approveKyc(UUID partnerId) {
     PartnerProfile partner = get(partnerId);
     PartnerKyc kyc = kycRepository.findByPartnerId(partnerId).orElseThrow();
     kyc.setStatus(KycStatus.APPROVED);
@@ -91,7 +92,7 @@ public class PartnerService {
   }
 
   @Transactional
-  public PartnerProfile rejectKyc(Long partnerId, String reason) {
+  public PartnerProfile rejectKyc(UUID partnerId, String reason) {
     PartnerProfile partner = get(partnerId);
     PartnerKyc kyc = kycRepository.findByPartnerId(partnerId).orElseThrow();
     kyc.setStatus(KycStatus.REJECTED);

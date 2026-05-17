@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -33,7 +34,7 @@ public class FileController {
 
   @PostMapping("/upload")
   public ApiResponse<FileAsset> upload(
-      @RequestParam(required = false) Long ownerUserId,
+      @RequestParam(required = false) UUID ownerUserId,
       @RequestParam(required = false) String referenceType,
       @RequestParam(required = false) String referenceId,
       @RequestParam("file") MultipartFile file)

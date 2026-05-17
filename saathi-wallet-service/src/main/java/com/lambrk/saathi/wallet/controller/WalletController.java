@@ -9,6 +9,7 @@ import com.lambrk.saathi.wallet.entity.PartnerWallet;
 import com.lambrk.saathi.wallet.service.WalletService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,12 +22,12 @@ public class WalletController {
   }
 
   @GetMapping("/partners/{partnerId}")
-  public ApiResponse<PartnerWallet> wallet(@PathVariable Long partnerId) {
+  public ApiResponse<PartnerWallet> wallet(@PathVariable UUID partnerId) {
     return ApiResponse.success("Wallet fetched successfully", service.wallet(partnerId));
   }
 
   @GetMapping("/partners/{partnerId}/earnings")
-  public ApiResponse<List<PartnerEarning>> earnings(@PathVariable Long partnerId) {
+  public ApiResponse<List<PartnerEarning>> earnings(@PathVariable UUID partnerId) {
     return ApiResponse.success("Earnings fetched successfully", service.earnings(partnerId));
   }
 
@@ -41,12 +42,12 @@ public class WalletController {
   }
 
   @GetMapping("/partners/{partnerId}/payouts")
-  public ApiResponse<List<PartnerPayout>> payouts(@PathVariable Long partnerId) {
+  public ApiResponse<List<PartnerPayout>> payouts(@PathVariable UUID partnerId) {
     return ApiResponse.success("Payouts fetched successfully", service.payouts(partnerId));
   }
 
   @PostMapping("/partners/{partnerId}/settle")
-  public ApiResponse<PartnerWallet> settle(@PathVariable Long partnerId) {
+  public ApiResponse<PartnerWallet> settle(@PathVariable UUID partnerId) {
     return ApiResponse.success(
         "Earnings settled to available balance", service.settleEarnings(partnerId));
   }

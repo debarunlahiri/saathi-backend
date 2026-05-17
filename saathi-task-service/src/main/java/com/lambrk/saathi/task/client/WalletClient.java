@@ -2,6 +2,7 @@ package com.lambrk.saathi.task.client;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -14,7 +15,7 @@ public class WalletClient {
   }
 
   public void createEarning(
-      Long taskId, Long partnerId, BigDecimal grossAmount, BigDecimal platformCommission) {
+      UUID taskId, UUID partnerId, BigDecimal grossAmount, BigDecimal platformCommission) {
     restClient
         .post()
         .uri("/api/wallets/earnings")

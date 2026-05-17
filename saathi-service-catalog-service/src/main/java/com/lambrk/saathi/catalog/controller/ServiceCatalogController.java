@@ -6,6 +6,7 @@ import com.lambrk.saathi.catalog.entity.ServiceCategory;
 import com.lambrk.saathi.catalog.service.ServiceCatalogService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +30,7 @@ public class ServiceCatalogController {
 
   @PutMapping("/{id}")
   public ApiResponse<ServiceCategory> update(
-      @PathVariable Long id, @Valid @RequestBody ServiceCategoryRequest request) {
+      @PathVariable UUID id, @Valid @RequestBody ServiceCategoryRequest request) {
     return ApiResponse.success("Category updated successfully", service.save(request, id));
   }
 }

@@ -1,6 +1,7 @@
 package com.lambrk.saathi.task.client;
 
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -13,7 +14,7 @@ public class NotificationClient {
   }
 
   public void notifyUser(
-      Long userId, String title, String message, String type, String referenceId) {
+      UUID userId, String title, String message, String type, String referenceId) {
     restClient
         .post()
         .uri("/api/notifications")

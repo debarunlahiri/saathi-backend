@@ -3,6 +3,7 @@ package com.lambrk.saathi.chat.document;
 import com.lambrk.saathi.chat.enums.MessageStatus;
 import com.lambrk.saathi.chat.enums.MessageType;
 import java.time.Instant;
+import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,8 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ChatMessage {
   @Id private String id;
   @Indexed private String roomId;
-  private Long taskId;
-  private Long senderId;
+  private UUID taskId;
+  private UUID senderId;
   private String senderRole;
   private MessageType messageType;
   private String content;
@@ -38,19 +39,19 @@ public class ChatMessage {
     this.roomId = roomId;
   }
 
-  public Long getTaskId() {
+  public UUID getTaskId() {
     return taskId;
   }
 
-  public void setTaskId(Long taskId) {
+  public void setTaskId(UUID taskId) {
     this.taskId = taskId;
   }
 
-  public Long getSenderId() {
+  public UUID getSenderId() {
     return senderId;
   }
 
-  public void setSenderId(Long senderId) {
+  public void setSenderId(UUID senderId) {
     this.senderId = senderId;
   }
 

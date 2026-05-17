@@ -4,6 +4,7 @@ import com.lambrk.saathi.catalog.dto.ServiceCategoryRequest;
 import com.lambrk.saathi.catalog.entity.ServiceCategory;
 import com.lambrk.saathi.catalog.repository.ServiceCategoryRepository;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +19,7 @@ public class ServiceCatalogService {
     return repository.findByActiveTrue();
   }
 
-  public ServiceCategory save(ServiceCategoryRequest request, Long id) {
+  public ServiceCategory save(ServiceCategoryRequest request, UUID id) {
     ServiceCategory category =
         id == null ? new ServiceCategory() : repository.findById(id).orElseThrow();
     category.setName(request.name());

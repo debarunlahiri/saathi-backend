@@ -10,6 +10,7 @@ import com.lambrk.saathi.payment.repository.PaymentRepository;
 import java.math.RoundingMode;
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +53,7 @@ public class PaymentService {
     return payment;
   }
 
-  public List<Payment> byTask(Long taskId) {
+  public List<Payment> byTask(UUID taskId) {
     return repository.findByTaskIdOrderByIdDesc(taskId);
   }
 

@@ -10,6 +10,7 @@ import com.lambrk.saathi.wallet.repository.PartnerPayoutRepository;
 import com.lambrk.saathi.wallet.repository.PartnerWalletRepository;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ public class WalletService {
     this.payoutRepository = payoutRepository;
   }
 
-  public PartnerWallet wallet(Long partnerId) {
+  public PartnerWallet wallet(UUID partnerId) {
     return walletRepository
         .findByPartnerId(partnerId)
         .orElseGet(
@@ -54,7 +55,7 @@ public class WalletService {
     return earningRepository.save(earning);
   }
 
-  public List<PartnerEarning> earnings(Long partnerId) {
+  public List<PartnerEarning> earnings(UUID partnerId) {
     return earningRepository.findByPartnerIdOrderByIdDesc(partnerId);
   }
 
@@ -79,12 +80,12 @@ public class WalletService {
     return payoutRepository.save(payout);
   }
 
-  public List<PartnerPayout> payouts(Long partnerId) {
+  public List<PartnerPayout> payouts(UUID partnerId) {
     return payoutRepository.findByPartnerIdOrderByIdDesc(partnerId);
   }
 
   @Transactional
-  public PartnerWallet settleEarnings(Long partnerId) {
+  public PartnerWallet settleEarnings(UUID partnerId) {
     PartnerWallet wallet = wallet(partnerId);
     BigDecimal pending = wallet.getPendingBalance();
     if (pending.compareTo(BigDecimal.ZERO) > 0) {

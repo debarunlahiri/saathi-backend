@@ -7,6 +7,7 @@ import com.lambrk.saathi.partner.entity.PartnerProfile;
 import com.lambrk.saathi.partner.service.PartnerService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,20 +27,20 @@ public class PartnerController {
   }
 
   @GetMapping("/{partnerId}")
-  public ApiResponse<PartnerProfile> get(@PathVariable Long partnerId) {
+  public ApiResponse<PartnerProfile> get(@PathVariable UUID partnerId) {
     return ApiResponse.success("Partner fetched successfully", partnerService.get(partnerId));
   }
 
   @PostMapping("/{partnerId}/kyc")
   public ApiResponse<PartnerKyc> submitKyc(
-      @PathVariable Long partnerId, @Valid @RequestBody KycRequest request) {
+      @PathVariable UUID partnerId, @Valid @RequestBody KycRequest request) {
     return ApiResponse.success(
         "Partner KYC submitted successfully", partnerService.submitKyc(partnerId, request));
   }
 
   @PutMapping("/{partnerId}/availability")
   public ApiResponse<PartnerProfile> availability(
-      @PathVariable Long partnerId, @Valid @RequestBody AvailabilityRequest request) {
+      @PathVariable UUID partnerId, @Valid @RequestBody AvailabilityRequest request) {
     return ApiResponse.success(
         "Partner availability updated successfully",
         partnerService.availability(partnerId, request));
@@ -47,7 +48,7 @@ public class PartnerController {
 
   @PutMapping("/{partnerId}/location")
   public ApiResponse<PartnerProfile> location(
-      @PathVariable Long partnerId, @Valid @RequestBody LocationRequest request) {
+      @PathVariable UUID partnerId, @Valid @RequestBody LocationRequest request) {
     return ApiResponse.success(
         "Partner location updated successfully", partnerService.location(partnerId, request));
   }
@@ -65,14 +66,14 @@ public class PartnerController {
   }
 
   @PutMapping("/admin/{partnerId}/kyc/approve")
-  public ApiResponse<PartnerProfile> approveKyc(@PathVariable Long partnerId) {
+  public ApiResponse<PartnerProfile> approveKyc(@PathVariable UUID partnerId) {
     return ApiResponse.success(
         "Partner KYC approved successfully", partnerService.approveKyc(partnerId));
   }
 
   @PutMapping("/admin/{partnerId}/kyc/reject")
   public ApiResponse<PartnerProfile> rejectKyc(
-      @PathVariable Long partnerId, @RequestBody RejectKycRequest request) {
+      @PathVariable UUID partnerId, @RequestBody RejectKycRequest request) {
     return ApiResponse.success(
         "Partner KYC rejected successfully", partnerService.rejectKyc(partnerId, request.reason()));
   }

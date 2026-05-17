@@ -6,6 +6,7 @@ import com.lambrk.saathi.notification.entity.Notification;
 import com.lambrk.saathi.notification.service.NotificationService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,12 +24,12 @@ public class NotificationController {
   }
 
   @GetMapping("/users/{userId}")
-  public ApiResponse<List<Notification>> byUser(@PathVariable Long userId) {
+  public ApiResponse<List<Notification>> byUser(@PathVariable UUID userId) {
     return ApiResponse.success("Notifications fetched successfully", service.byUser(userId));
   }
 
   @PutMapping("/{id}/read")
-  public ApiResponse<Notification> read(@PathVariable Long id) {
+  public ApiResponse<Notification> read(@PathVariable UUID id) {
     return ApiResponse.success("Notification marked as read", service.read(id));
   }
 }

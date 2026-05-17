@@ -5,6 +5,7 @@ import com.lambrk.saathi.notification.dto.RegisterDeviceTokenRequest;
 import com.lambrk.saathi.notification.service.DeviceTokenService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +30,7 @@ public class DeviceTokenController {
   }
 
   @GetMapping("/users/{userId}")
-  public ApiResponse<List<String>> tokens(@PathVariable Long userId) {
+  public ApiResponse<List<String>> tokens(@PathVariable UUID userId) {
     return ApiResponse.success("Device tokens fetched successfully", service.tokens(userId));
   }
 }

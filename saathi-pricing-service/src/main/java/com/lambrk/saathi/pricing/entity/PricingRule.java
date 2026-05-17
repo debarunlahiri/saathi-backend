@@ -3,16 +3,17 @@ package com.lambrk.saathi.pricing.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "pricing_rules")
 public class PricingRule {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
   @Column(name = "service_category_id", nullable = false)
-  private Long serviceCategoryId;
+  private UUID serviceCategoryId;
 
   @Column(name = "base_price", nullable = false, precision = 10, scale = 2)
   private BigDecimal basePrice = BigDecimal.ZERO;
@@ -44,19 +45,22 @@ public class PricingRule {
   private Instant createdAt;
 
   @PrePersist
-  void prePersist() {
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
     createdAt = Instant.now();
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public Long getServiceCategoryId() {
+  public UUID getServiceCategoryId() {
     return serviceCategoryId;
   }
 
-  public void setServiceCategoryId(Long serviceCategoryId) {
+  public void setServiceCategoryId(UUID serviceCategoryId) {
     this.serviceCategoryId = serviceCategoryId;
   }
 

@@ -2,6 +2,7 @@ package com.lambrk.saathi.notification.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(
@@ -9,11 +10,11 @@ import java.time.Instant;
     uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "device_token"}))
 public class DeviceToken {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
   @Column(name = "user_id", nullable = false)
-  private Long userId;
+  private UUID userId;
 
   @Column(name = "device_token", nullable = false, length = 500)
   private String deviceToken;
@@ -25,7 +26,10 @@ public class DeviceToken {
   private Instant updatedAt;
 
   @PrePersist
-  void prePersist() {
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
     createdAt = Instant.now();
     updatedAt = createdAt;
   }
@@ -35,15 +39,15 @@ public class DeviceToken {
     updatedAt = Instant.now();
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public Long getUserId() {
+  public UUID getUserId() {
     return userId;
   }
 
-  public void setUserId(Long userId) {
+  public void setUserId(UUID userId) {
     this.userId = userId;
   }
 

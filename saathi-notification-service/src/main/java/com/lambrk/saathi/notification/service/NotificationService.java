@@ -9,6 +9,7 @@ import com.lambrk.saathi.notification.provider.SmsProvider;
 import com.lambrk.saathi.notification.provider.WhatsAppProvider;
 import com.lambrk.saathi.notification.repository.NotificationRepository;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,25 +52,25 @@ public class NotificationService {
     return notification;
   }
 
-  public List<Notification> byUser(Long userId) {
+  public List<Notification> byUser(UUID userId) {
     return repository.findByUserIdOrderByIdDesc(userId);
   }
 
   @Transactional
-  public Notification read(Long id) {
+  public Notification read(UUID id) {
     Notification notification = repository.findById(id).orElseThrow();
     notification.setReadStatus(true);
     return notification;
   }
 
-  public void sendPushToUser(Long userId, String title, String body) {
+  public void sendPushToUser(UUID userId, String title, String body) {
     List<String> tokens = deviceTokenService.tokens(userId);
     for (String token : tokens) {
       pushProvider.send(token, title, body);
     }
   }
 
-  private void sendViaAllChannels(Long userId, String title, String body) {
+  private void sendViaAllChannels(UUID userId, String title, String body) {
     sendPushNotification(userId, title, body);
     UserClient.UserDto user = userClient.getUser(userId);
     if (user != null) {
@@ -83,7 +84,7 @@ public class NotificationService {
     }
   }
 
-  private void sendPushNotification(Long userId, String title, String body) {
+  private void sendPushNotification(UUID userId, String title, String body) {
     List<String> tokens = deviceTokenService.tokens(userId);
     for (String token : tokens) {
       pushProvider.send(token, title, body);

@@ -8,6 +8,7 @@ import com.lambrk.saathi.task.entity.Task;
 import com.lambrk.saathi.task.service.TaskApplicationService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,18 +26,18 @@ public class TaskController {
   }
 
   @GetMapping("/{taskId}")
-  public ApiResponse<Task> get(@PathVariable Long taskId) {
+  public ApiResponse<Task> get(@PathVariable UUID taskId) {
     return ApiResponse.success("Task fetched successfully", taskService.get(taskId));
   }
 
   @GetMapping("/customer/{customerId}")
-  public ApiResponse<List<Task>> customerTasks(@PathVariable Long customerId) {
+  public ApiResponse<List<Task>> customerTasks(@PathVariable UUID customerId) {
     return ApiResponse.success(
         "Customer tasks fetched successfully", taskService.customerTasks(customerId));
   }
 
   @GetMapping("/partner/{partnerId}")
-  public ApiResponse<List<Task>> partnerTasks(@PathVariable Long partnerId) {
+  public ApiResponse<List<Task>> partnerTasks(@PathVariable UUID partnerId) {
     return ApiResponse.success(
         "Partner tasks fetched successfully", taskService.partnerTasks(partnerId));
   }
@@ -48,18 +49,18 @@ public class TaskController {
 
   @PostMapping("/{taskId}/accept")
   public ApiResponse<Task> accept(
-      @PathVariable Long taskId, @Valid @RequestBody AcceptTaskRequest request) {
+      @PathVariable UUID taskId, @Valid @RequestBody AcceptTaskRequest request) {
     return ApiResponse.success("Task accepted successfully", taskService.accept(taskId, request));
   }
 
   @PostMapping("/{taskId}/assign")
-  public ApiResponse<Task> assignNearest(@PathVariable Long taskId) {
+  public ApiResponse<Task> assignNearest(@PathVariable UUID taskId) {
     return ApiResponse.success("Task assigned successfully", taskService.assignNearest(taskId));
   }
 
   @PutMapping("/{taskId}/status")
   public ApiResponse<Task> updateStatus(
-      @PathVariable Long taskId, @Valid @RequestBody TaskStatusRequest request) {
+      @PathVariable UUID taskId, @Valid @RequestBody TaskStatusRequest request) {
     return ApiResponse.success(
         "Task status updated successfully", taskService.updateStatus(taskId, request));
   }

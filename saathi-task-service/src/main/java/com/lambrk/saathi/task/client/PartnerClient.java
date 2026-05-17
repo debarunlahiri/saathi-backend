@@ -2,6 +2,7 @@ package com.lambrk.saathi.task.client;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -13,7 +14,7 @@ public class PartnerClient {
     this.restClient = restClientBuilder.baseUrl("http://saathi-partner-service").build();
   }
 
-  public void ensurePartnerCanAccept(Long partnerId) {
+  public void ensurePartnerCanAccept(UUID partnerId) {
     Map<String, Object> response =
         restClient.get().uri("/api/partners/{partnerId}", partnerId).retrieve().body(Map.class);
     Map<String, Object> partner = data(response);

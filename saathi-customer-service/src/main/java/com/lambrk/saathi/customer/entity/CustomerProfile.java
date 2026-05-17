@@ -3,6 +3,7 @@ package com.lambrk.saathi.customer.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(
@@ -11,11 +12,11 @@ import java.time.Instant;
         @Index(name = "idx_customer_identity_user", columnList = "identity_user_id", unique = true))
 public class CustomerProfile {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
   @Column(name = "identity_user_id", nullable = false, unique = true)
-  private Long identityUserId;
+  private UUID identityUserId;
 
   @Column(name = "full_name", nullable = false)
   private String fullName;
@@ -44,6 +45,13 @@ public class CustomerProfile {
   private Instant updatedAt;
 
   @PrePersist
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
+  }
+
+  @PrePersist
   void prePersist() {
     createdAt = Instant.now();
     updatedAt = createdAt;
@@ -54,15 +62,15 @@ public class CustomerProfile {
     updatedAt = Instant.now();
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public Long getIdentityUserId() {
+  public UUID getIdentityUserId() {
     return identityUserId;
   }
 
-  public void setIdentityUserId(Long identityUserId) {
+  public void setIdentityUserId(UUID identityUserId) {
     this.identityUserId = identityUserId;
   }
 

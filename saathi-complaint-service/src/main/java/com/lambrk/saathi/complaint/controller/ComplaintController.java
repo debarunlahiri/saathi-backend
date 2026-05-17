@@ -7,6 +7,7 @@ import com.lambrk.saathi.complaint.entity.Complaint;
 import com.lambrk.saathi.complaint.service.ComplaintService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +25,7 @@ public class ComplaintController {
   }
 
   @GetMapping("/users/{raisedBy}")
-  public ApiResponse<List<Complaint>> mine(@PathVariable Long raisedBy) {
+  public ApiResponse<List<Complaint>> mine(@PathVariable UUID raisedBy) {
     return ApiResponse.success("Complaints fetched successfully", service.mine(raisedBy));
   }
 
@@ -40,7 +41,7 @@ public class ComplaintController {
 
   @PutMapping("/{id}/status")
   public ApiResponse<Complaint> updateStatus(
-      @PathVariable Long id, @Valid @RequestBody UpdateComplaintStatusRequest request) {
+      @PathVariable UUID id, @Valid @RequestBody UpdateComplaintStatusRequest request) {
     return ApiResponse.success("Complaint updated successfully", service.updateStatus(id, request));
   }
 }

@@ -5,6 +5,7 @@ import com.lambrk.saathi.customer.dto.response.ApiResponse;
 import com.lambrk.saathi.customer.entity.CustomerProfile;
 import com.lambrk.saathi.customer.service.CustomerService;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +24,7 @@ public class CustomerController {
   }
 
   @GetMapping("/{customerId}")
-  public ApiResponse<CustomerProfile> get(@PathVariable Long customerId) {
+  public ApiResponse<CustomerProfile> get(@PathVariable UUID customerId) {
     return ApiResponse.success(
         "Customer profile fetched successfully", customerService.get(customerId));
   }

@@ -2,6 +2,7 @@ package com.lambrk.saathi.task.client;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -13,7 +14,7 @@ public class PricingClient {
     this.restClient = restClientBuilder.baseUrl("http://saathi-pricing-service").build();
   }
 
-  public BigDecimal estimate(Long serviceCategoryId) {
+  public BigDecimal estimate(UUID serviceCategoryId) {
     Map<String, Object> response =
         restClient
             .post()

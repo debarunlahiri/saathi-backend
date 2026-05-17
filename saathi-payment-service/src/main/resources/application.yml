@@ -11,7 +11,7 @@ spring:
     password: ${POSTGRES_PASSWORD:saathi}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     open-in-view: false
 razorpay:
   key-id: ${RAZORPAY_KEY_ID:}

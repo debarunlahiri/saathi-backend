@@ -2,16 +2,17 @@ package com.lambrk.saathi.file.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "file_assets")
 public class FileAsset {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
   @Column(name = "owner_user_id")
-  private Long ownerUserId;
+  private UUID ownerUserId;
 
   @Column(name = "reference_type")
   private String referenceType;
@@ -32,19 +33,22 @@ public class FileAsset {
   private Instant createdAt;
 
   @PrePersist
-  void prePersist() {
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
     createdAt = Instant.now();
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public Long getOwnerUserId() {
+  public UUID getOwnerUserId() {
     return ownerUserId;
   }
 
-  public void setOwnerUserId(Long ownerUserId) {
+  public void setOwnerUserId(UUID ownerUserId) {
     this.ownerUserId = ownerUserId;
   }
 

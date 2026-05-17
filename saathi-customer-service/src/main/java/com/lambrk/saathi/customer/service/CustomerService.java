@@ -3,6 +3,7 @@ package com.lambrk.saathi.customer.service;
 import com.lambrk.saathi.customer.dto.request.CustomerProfileRequest;
 import com.lambrk.saathi.customer.entity.CustomerProfile;
 import com.lambrk.saathi.customer.repository.CustomerProfileRepository;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,7 +28,7 @@ public class CustomerService {
     return repository.save(profile);
   }
 
-  public CustomerProfile get(Long customerId) {
+  public CustomerProfile get(UUID customerId) {
     return repository.findById(customerId).orElseThrow();
   }
 }

@@ -4,6 +4,7 @@ import com.lambrk.saathi.notification.dto.RegisterDeviceTokenRequest;
 import com.lambrk.saathi.notification.entity.DeviceToken;
 import com.lambrk.saathi.notification.repository.DeviceTokenRepository;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ public class DeviceTokenService {
     repository.deleteByDeviceToken(request.deviceToken());
   }
 
-  public List<String> tokens(Long userId) {
+  public List<String> tokens(UUID userId) {
     return repository.findByUserId(userId).stream().map(DeviceToken::getDeviceToken).toList();
   }
 }

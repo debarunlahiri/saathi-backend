@@ -2,8 +2,9 @@ package com.lambrk.saathi.catalog.repository;
 
 import com.lambrk.saathi.catalog.entity.ServiceCategory;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ServiceCategoryRepository extends JpaRepository<ServiceCategory, Long> {
+public interface ServiceCategoryRepository extends JpaRepository<ServiceCategory, UUID> {
   List<ServiceCategory> findByActiveTrue();
 }

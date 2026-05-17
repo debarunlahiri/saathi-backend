@@ -1,5 +1,6 @@
 package com.lambrk.saathi.notification.client;
 
+import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -12,7 +13,7 @@ public class UserClient {
     this.restClient = restClientBuilder.baseUrl("http://saathi-identity-service").build();
   }
 
-  public UserDto getUser(Long userId) {
+  public UserDto getUser(UUID userId) {
     try {
       return restClient.get().uri("/api/users/{id}", userId).retrieve().body(UserDto.class);
     } catch (Exception e) {
@@ -20,5 +21,5 @@ public class UserClient {
     }
   }
 
-  public record UserDto(Long id, String fullName, String mobileNumber, String email) {}
+  public record UserDto(UUID id, String fullName, String mobileNumber, String email) {}
 }

@@ -2,6 +2,7 @@ package com.lambrk.saathi.task.client;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -13,7 +14,7 @@ public class PaymentClient {
     this.restClient = restClientBuilder.baseUrl("http://saathi-payment-service").build();
   }
 
-  public void createOrder(Long taskId, Long customerId, BigDecimal amount) {
+  public void createOrder(UUID taskId, UUID customerId, BigDecimal amount) {
     restClient
         .post()
         .uri("/api/payments/create-order")

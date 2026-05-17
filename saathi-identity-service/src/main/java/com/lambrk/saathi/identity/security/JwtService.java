@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
+import java.util.UUID;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,9 +36,9 @@ public class JwtService {
     return token(user, refreshTokenDays * 24 * 60 * 60);
   }
 
-  public Long subject(String token) {
+  public UUID subject(String token) {
     Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
-    return Long.valueOf(claims.getSubject());
+    return UUID.fromString(claims.getSubject());
   }
 
   private String token(User user, long seconds) {

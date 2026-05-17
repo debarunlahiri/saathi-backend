@@ -6,6 +6,7 @@ import com.lambrk.saathi.complaint.entity.Complaint;
 import com.lambrk.saathi.complaint.enums.ComplaintStatus;
 import com.lambrk.saathi.complaint.repository.ComplaintRepository;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +27,7 @@ public class ComplaintService {
     return repository.save(complaint);
   }
 
-  public List<Complaint> mine(Long raisedBy) {
+  public List<Complaint> mine(UUID raisedBy) {
     return repository.findByRaisedByOrderByIdDesc(raisedBy);
   }
 
@@ -39,7 +40,7 @@ public class ComplaintService {
   }
 
   @Transactional
-  public Complaint updateStatus(Long id, UpdateComplaintStatusRequest request) {
+  public Complaint updateStatus(UUID id, UpdateComplaintStatusRequest request) {
     Complaint complaint = repository.findById(id).orElseThrow();
     complaint.setStatus(request.status());
     complaint.setAdminRemarks(request.adminRemarks());

@@ -6,6 +6,7 @@ import com.lambrk.saathi.file.repository.FileAssetRepository;
 import com.lambrk.saathi.file.storage.FileStorageProvider;
 import com.lambrk.saathi.file.storage.FileStorageRegistry;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +31,7 @@ public class FileAssetService {
   }
 
   public FileAsset upload(
-      Long ownerUserId,
+      UUID ownerUserId,
       String referenceType,
       String referenceId,
       String fileName,

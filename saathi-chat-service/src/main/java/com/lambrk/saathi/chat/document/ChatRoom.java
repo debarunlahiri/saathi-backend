@@ -1,6 +1,7 @@
 package com.lambrk.saathi.chat.document;
 
 import java.time.Instant;
+import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,10 +11,10 @@ public class ChatRoom {
   @Id private String id;
 
   @Indexed(unique = true)
-  private Long taskId;
+  private UUID taskId;
 
-  private Long customerId;
-  private Long partnerId;
+  private UUID customerId;
+  private UUID partnerId;
   private String status;
   private Instant createdAt;
 
@@ -25,27 +26,27 @@ public class ChatRoom {
     this.id = id;
   }
 
-  public Long getTaskId() {
+  public UUID getTaskId() {
     return taskId;
   }
 
-  public void setTaskId(Long taskId) {
+  public void setTaskId(UUID taskId) {
     this.taskId = taskId;
   }
 
-  public Long getCustomerId() {
+  public UUID getCustomerId() {
     return customerId;
   }
 
-  public void setCustomerId(Long customerId) {
+  public void setCustomerId(UUID customerId) {
     this.customerId = customerId;
   }
 
-  public Long getPartnerId() {
+  public UUID getPartnerId() {
     return partnerId;
   }
 
-  public void setPartnerId(Long partnerId) {
+  public void setPartnerId(UUID partnerId) {
     this.partnerId = partnerId;
   }
 

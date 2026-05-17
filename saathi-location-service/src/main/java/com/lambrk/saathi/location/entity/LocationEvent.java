@@ -3,6 +3,7 @@ package com.lambrk.saathi.location.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(
@@ -10,14 +11,14 @@ import java.time.Instant;
     indexes = @Index(name = "idx_location_task", columnList = "task_id"))
 public class LocationEvent {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
   @Column(name = "task_id", nullable = false)
-  private Long taskId;
+  private UUID taskId;
 
   @Column(name = "partner_id", nullable = false)
-  private Long partnerId;
+  private UUID partnerId;
 
   @Column(nullable = false, precision = 10, scale = 7)
   private BigDecimal latitude;
@@ -31,27 +32,30 @@ public class LocationEvent {
   private Instant createdAt;
 
   @PrePersist
-  void prePersist() {
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
     createdAt = Instant.now();
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public Long getTaskId() {
+  public UUID getTaskId() {
     return taskId;
   }
 
-  public void setTaskId(Long taskId) {
+  public void setTaskId(UUID taskId) {
     this.taskId = taskId;
   }
 
-  public Long getPartnerId() {
+  public UUID getPartnerId() {
     return partnerId;
   }
 
-  public void setPartnerId(Long partnerId) {
+  public void setPartnerId(UUID partnerId) {
     this.partnerId = partnerId;
   }
 

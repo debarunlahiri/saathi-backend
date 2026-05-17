@@ -5,6 +5,7 @@ import com.lambrk.saathi.payment.entity.Payment;
 import com.lambrk.saathi.payment.service.PaymentService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,7 +28,7 @@ public class PaymentController {
   }
 
   @GetMapping("/task/{taskId}")
-  public ApiResponse<List<Payment>> byTask(@PathVariable Long taskId) {
+  public ApiResponse<List<Payment>> byTask(@PathVariable UUID taskId) {
     return ApiResponse.success("Payments fetched successfully", service.byTask(taskId));
   }
 

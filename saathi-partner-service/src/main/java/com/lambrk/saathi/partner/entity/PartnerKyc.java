@@ -3,13 +3,14 @@ package com.lambrk.saathi.partner.entity;
 import com.lambrk.saathi.partner.enums.KycStatus;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "partner_kyc")
 public class PartnerKyc {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
   @OneToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "partner_id", nullable = false, unique = true)
@@ -42,10 +43,17 @@ public class PartnerKyc {
 
   @PrePersist
   void prePersist() {
+    generateId();
     createdAt = Instant.now();
   }
 
-  public Long getId() {
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
+  }
+
+  public UUID getId() {
     return id;
   }
 

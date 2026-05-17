@@ -5,6 +5,7 @@ import com.lambrk.saathi.partner.enums.KycStatus;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(
@@ -15,11 +16,11 @@ import java.time.Instant;
     })
 public class PartnerProfile {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
-  @Column(name = "identity_user_id", nullable = false, unique = true)
-  private Long identityUserId;
+  @Column(name = "identity_user_id", nullable = false, unique = true, columnDefinition = "uuid")
+  private UUID identityUserId;
 
   @Column(name = "full_name", nullable = false)
   private String fullName;
@@ -58,8 +59,15 @@ public class PartnerProfile {
 
   @PrePersist
   void prePersist() {
+    generateId();
     createdAt = Instant.now();
     updatedAt = createdAt;
+  }
+
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
   }
 
   @PreUpdate
@@ -67,15 +75,15 @@ public class PartnerProfile {
     updatedAt = Instant.now();
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public Long getIdentityUserId() {
+  public UUID getIdentityUserId() {
     return identityUserId;
   }
 
-  public void setIdentityUserId(Long identityUserId) {
+  public void setIdentityUserId(UUID identityUserId) {
     this.identityUserId = identityUserId;
   }
 

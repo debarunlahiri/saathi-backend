@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(
@@ -17,17 +18,17 @@ import java.time.OffsetDateTime;
     })
 public class Task {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+  private UUID id;
 
-  @Column(name = "customer_id", nullable = false)
-  private Long customerId;
+  @Column(name = "customer_id", nullable = false, columnDefinition = "uuid")
+  private UUID customerId;
 
-  @Column(name = "partner_id")
-  private Long partnerId;
+  @Column(name = "partner_id", columnDefinition = "uuid")
+  private UUID partnerId;
 
-  @Column(name = "service_category_id", nullable = false)
-  private Long serviceCategoryId;
+  @Column(name = "service_category_id", nullable = false, columnDefinition = "uuid")
+  private UUID serviceCategoryId;
 
   @Column(nullable = false)
   private String title;
@@ -72,8 +73,15 @@ public class Task {
 
   @PrePersist
   void prePersist() {
+    generateId();
     createdAt = Instant.now();
     updatedAt = createdAt;
+  }
+
+  void generateId() {
+    if (id == null) {
+      id = com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();
+    }
   }
 
   @PreUpdate
@@ -81,31 +89,31 @@ public class Task {
     updatedAt = Instant.now();
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public Long getCustomerId() {
+  public UUID getCustomerId() {
     return customerId;
   }
 
-  public void setCustomerId(Long customerId) {
+  public void setCustomerId(UUID customerId) {
     this.customerId = customerId;
   }
 
-  public Long getPartnerId() {
+  public UUID getPartnerId() {
     return partnerId;
   }
 
-  public void setPartnerId(Long partnerId) {
+  public void setPartnerId(UUID partnerId) {
     this.partnerId = partnerId;
   }
 
-  public Long getServiceCategoryId() {
+  public UUID getServiceCategoryId() {
     return serviceCategoryId;
   }
 
-  public void setServiceCategoryId(Long serviceCategoryId) {
+  public void setServiceCategoryId(UUID serviceCategoryId) {
     this.serviceCategoryId = serviceCategoryId;
   }
 
