@@ -30,9 +30,23 @@ saathi-complaint-service
 saathi-admin-service
 ```
 
+## Prerequisites
+
+- Java 21
+- Docker Desktop (for PostgreSQL, MongoDB)
+- Firebase project with Phone Auth and Cloud Messaging enabled
+- Firebase service account JSON key file
+
+### Firebase Setup
+
+1. Place the Firebase service account JSON at `saathi-identity-service/src/main/resources/firebase-service-account.json`
+2. Copy the same file to `saathi-notification-service/src/main/resources/firebase-service-account.json`
+3. Or set `FIREBASE_SERVICE_ACCOUNT_PATH` env var pointing to the JSON path
+
 ## Build
 
 ```bash
+mvn spotless:apply
 mvn test
 mvn package -DskipTests
 ```

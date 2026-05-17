@@ -3,6 +3,7 @@ package com.lambrk.saathi.notification.provider;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ public class WhatsAppProvider {
   private final String accessToken;
 
   public WhatsAppProvider(
-      RestClient.Builder restClientBuilder,
+      @Qualifier("plainRestClientBuilder") RestClient.Builder restClientBuilder,
       @Value("${whatsapp.phone-number-id:}") String phoneNumberId,
       @Value("${whatsapp.access-token:}") String accessToken) {
     this.restClient = restClientBuilder.baseUrl("https://graph.facebook.com/v20.0").build();

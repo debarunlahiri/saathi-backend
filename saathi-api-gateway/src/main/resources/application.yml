@@ -12,7 +12,7 @@ spring:
         - id: identity-service
           uri: lb://saathi-identity-service
           predicates:
-            - Path=/api/auth/**
+            - Path=/api/auth/**,/api/users/**
         - id: customer-service
           uri: lb://saathi-customer-service
           predicates:
@@ -52,7 +52,7 @@ spring:
         - id: notification-service
           uri: lb://saathi-notification-service
           predicates:
-            - Path=/api/notifications/**
+            - Path=/api/notifications/**,/api/device-tokens/**
         - id: file-service
           uri: lb://saathi-file-service
           predicates:

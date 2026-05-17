@@ -3,6 +3,7 @@ package com.lambrk.saathi.notification.provider;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ public class SmsProvider {
   private final String senderId;
 
   public SmsProvider(
-      RestClient.Builder restClientBuilder,
+      @Qualifier("plainRestClientBuilder") RestClient.Builder restClientBuilder,
       @Value("${sms.api-url:}") String apiUrl,
       @Value("${sms.api-key:}") String apiKey,
       @Value("${sms.sender-id:SAATHI}") String senderId) {
