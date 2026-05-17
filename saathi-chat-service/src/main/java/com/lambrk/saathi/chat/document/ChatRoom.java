@@ -1,67 +1,67 @@
 package com.lambrk.saathi.chat.document;
 
+import java.time.Instant;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.Instant;
-
 @Document(collection = "chat_rooms")
 public class ChatRoom {
-    @Id
-    private String id;
-    @Indexed(unique = true)
-    private Long taskId;
-    private Long customerId;
-    private Long partnerId;
-    private String status;
-    private Instant createdAt;
+  @Id private String id;
 
-    public String getId() {
-        return id;
-    }
+  @Indexed(unique = true)
+  private Long taskId;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  private Long customerId;
+  private Long partnerId;
+  private String status;
+  private Instant createdAt;
 
-    public Long getTaskId() {
-        return taskId;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public Long getCustomerId() {
-        return customerId;
-    }
+  public Long getTaskId() {
+    return taskId;
+  }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
+  public void setTaskId(Long taskId) {
+    this.taskId = taskId;
+  }
 
-    public Long getPartnerId() {
-        return partnerId;
-    }
+  public Long getCustomerId() {
+    return customerId;
+  }
 
-    public void setPartnerId(Long partnerId) {
-        this.partnerId = partnerId;
-    }
+  public void setCustomerId(Long customerId) {
+    this.customerId = customerId;
+  }
 
-    public String getStatus() {
-        return status;
-    }
+  public Long getPartnerId() {
+    return partnerId;
+  }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+  public void setPartnerId(Long partnerId) {
+    this.partnerId = partnerId;
+  }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
+  public String getStatus() {
+    return status;
+  }
 
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public Instant getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(Instant createdAt) {
+    this.createdAt = createdAt;
+  }
 }

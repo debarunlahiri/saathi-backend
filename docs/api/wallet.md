@@ -100,6 +100,149 @@ Full response:
 }
 ```
 
+### Initiate Payout
+
+Endpoint:
+
+```http
+POST /api/wallets/payouts
+```
+
+API name: Withdraw earnings from available balance.
+
+Curl:
+
+```bash
+curl -X POST http://localhost:8080/api/wallets/payouts \
+  -H "Authorization: Bearer <accessToken>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "partnerId": 1,
+    "amount": 100,
+    "payoutMethod": "UPI"
+  }'
+```
+
+Full request:
+
+```json
+{
+  "partnerId": 1,
+  "amount": 100,
+  "payoutMethod": "UPI"
+}
+```
+
+Full response:
+
+```json
+{
+  "success": true,
+  "message": "Payout initiated successfully",
+  "data": {
+    "id": 1,
+    "partnerId": 1,
+    "amount": 100,
+    "payoutMethod": "UPI",
+    "payoutReference": null,
+    "status": "INITIATED",
+    "createdAt": "2026-05-15T05:30:00Z"
+  }
+}
+```
+
+Notes:
+- Requires sufficient `availableBalance`. Throws HTTP 400 if balance is insufficient.
+- Deducts from `availableBalance` and increments `totalWithdrawn`.
+
+### Get Payout History
+
+Endpoint:
+
+```http
+GET /api/wallets/partners/{partnerId}/payouts
+```
+
+API name: List payout history for a partner.
+
+Curl:
+
+```bash
+curl -X GET http://localhost:8080/api/wallets/partners/1/payouts \
+  -H "Authorization: Bearer <accessToken>"
+```
+
+Full request:
+
+```text
+No request body.
+```
+
+Full response:
+
+```json
+{
+  "success": true,
+  "message": "Payouts fetched successfully",
+  "data": [
+    {
+      "id": 1,
+      "partnerId": 1,
+      "amount": 100,
+      "payoutMethod": "UPI",
+      "payoutReference": null,
+      "status": "INITIATED",
+      "createdAt": "2026-05-15T05:30:00Z"
+    }
+  ]
+}
+```
+
+### Settle Pending Earnings
+
+Endpoint:
+
+```http
+POST /api/wallets/partners/{partnerId}/settle
+```
+
+API name: Move pending earnings to available balance.
+
+Curl:
+
+```bash
+curl -X POST http://localhost:8080/api/wallets/partners/1/settle \
+  -H "Authorization: Bearer <accessToken>"
+```
+
+Full request:
+
+```text
+No request body.
+```
+
+Full response:
+
+```json
+{
+  "success": true,
+  "message": "Earnings settled to available balance",
+  "data": {
+    "id": 1,
+    "partnerId": 1,
+    "availableBalance": 54,
+    "pendingBalance": 0,
+    "totalEarnings": 54,
+    "totalWithdrawn": 0,
+    "updatedAt": "2026-05-15T05:30:00Z"
+  }
+}
+```
+
+Notes:
+- Moves entire `pendingBalance` to `availableBalance`.
+- Idempotent: calling when pending balance is 0 has no effect.
+
 ### Create Partner Earning
 
 Endpoint:

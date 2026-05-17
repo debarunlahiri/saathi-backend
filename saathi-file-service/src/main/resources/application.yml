@@ -16,6 +16,13 @@ spring:
 saathi:
   file:
     storage-root: ${FILE_STORAGE_ROOT:./data/files}
+    s3:
+      bucket: ${S3_BUCKET:}
+      region: ${S3_REGION:ap-south-1}
+    cloudinary:
+      cloud-name: ${CLOUDINARY_CLOUD_NAME:}
+      api-key: ${CLOUDINARY_API_KEY:}
+      api-secret: ${CLOUDINARY_API_SECRET:}
 eureka:
   client:
     service-url:

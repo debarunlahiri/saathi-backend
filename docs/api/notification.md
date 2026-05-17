@@ -115,6 +115,129 @@ Full response:
 }
 ```
 
+### Register Device Token
+
+Endpoint:
+
+```http
+POST /api/device-tokens
+```
+
+API name: Register a Firebase Cloud Messaging device token for push notifications.
+
+Curl:
+
+```bash
+curl -X POST http://localhost:8080/api/device-tokens \
+  -H "Authorization: Bearer <accessToken>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userId": 1,
+    "deviceToken": "fcm_device_token_abc123"
+  }'
+```
+
+Full request:
+
+```json
+{
+  "userId": 1,
+  "deviceToken": "fcm_device_token_abc123"
+}
+```
+
+Full response:
+
+```json
+{
+  "success": true,
+  "message": "Device token registered successfully",
+  "data": null
+}
+```
+
+### Unregister Device Token
+
+Endpoint:
+
+```http
+DELETE /api/device-tokens
+```
+
+API name: Remove a device token (e.g. on logout).
+
+Curl:
+
+```bash
+curl -X DELETE http://localhost:8080/api/device-tokens \
+  -H "Authorization: Bearer <accessToken>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userId": 1,
+    "deviceToken": "fcm_device_token_abc123"
+  }'
+```
+
+Full request:
+
+```json
+{
+  "userId": 1,
+  "deviceToken": "fcm_device_token_abc123"
+}
+```
+
+Full response:
+
+```json
+{
+  "success": true,
+  "message": "Device token unregistered successfully",
+  "data": null
+}
+```
+
+### List Device Tokens
+
+Endpoint:
+
+```http
+GET /api/device-tokens/users/{userId}
+```
+
+API name: List all registered device tokens for a user.
+
+Curl:
+
+```bash
+curl -X GET http://localhost:8080/api/device-tokens/users/1 \
+  -H "Authorization: Bearer <accessToken>"
+```
+
+Full request:
+
+```text
+No request body.
+```
+
+Full response:
+
+```json
+{
+  "success": true,
+  "message": "Device tokens fetched successfully",
+  "data": [
+    "fcm_device_token_abc123",
+    "fcm_device_token_def456"
+  ]
+}
+```
+
+Notes:
+- Creating a notification automatically triggers multi-channel delivery: push (Firebase FCM), email (SMTP), SMS, and WhatsApp.
+- Push notifications are sent to all registered device tokens for the user.
+- Email, SMS, and WhatsApp are sent when the respective provider is configured.
+
 ### Mark Notification Read
 
 Endpoint:

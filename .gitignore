@@ -6,3 +6,6 @@ target/
 logs/
 *.log
 .env
+**/firebase-service-account.json
+serviceAccountKey.json
+data/

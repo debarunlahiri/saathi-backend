@@ -1,10 +1,9 @@
 package com.lambrk.saathi.notification.repository;
 
 import com.lambrk.saathi.notification.entity.Notification;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
-    List<Notification> findByUserIdOrderByIdDesc(Long userId);
+  List<Notification> findByUserIdOrderByIdDesc(Long userId);
 }

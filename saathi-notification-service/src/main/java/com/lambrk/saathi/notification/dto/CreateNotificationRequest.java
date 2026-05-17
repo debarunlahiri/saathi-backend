@@ -3,5 +3,9 @@ package com.lambrk.saathi.notification.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record CreateNotificationRequest(@NotNull Long userId, @NotBlank String title, @NotBlank String message, String notificationType, String referenceId) {
-}
+public record CreateNotificationRequest(
+    @NotNull Long userId,
+    @NotBlank String title,
+    @NotBlank String message,
+    String notificationType,
+    String referenceId) {}

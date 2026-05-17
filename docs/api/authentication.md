@@ -158,6 +158,103 @@ Full response:
 }
 ```
 
+### Firebase Phone Authentication - Customer Login
+Endpoint:
+
+```http
+POST /api/auth/firebase/customer/login
+```
+
+API name: Login or auto-register as customer using Firebase phone auth ID token.
+
+Curl:
+
+```bash
+curl -X POST http://localhost:8080/api/auth/firebase/customer/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6...firebase_id_token...",
+    "fullName": "Amit Sharma",
+    "email": "amit@example.com"
+  }'
+```
+
+Full request:
+
+```json
+{
+  "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6...firebase_id_token...",
+  "fullName": "Amit Sharma",
+  "email": "amit@example.com"
+}
+```
+
+Full response:
+
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "userId": 1,
+    "role": "CUSTOMER",
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9.access.token",
+    "refreshToken": "eyJhbGciOiJIUzI1NiJ9.refresh.token"
+  }
+}
+```
+
+Notes:
+- `idToken` is the Firebase ID token obtained after phone OTP verification on the client.
+- If the phone number is not registered, a new user is auto-created. `fullName` and `email` are optional for new users.
+
+### Firebase Phone Authentication - Partner Login
+
+Endpoint:
+
+```http
+POST /api/auth/firebase/partner/login
+```
+
+API name: Login or auto-register as partner using Firebase phone auth ID token.
+
+Curl:
+
+```bash
+curl -X POST http://localhost:8080/api/auth/firebase/partner/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6...firebase_id_token...",
+    "fullName": "Rahul Verma",
+    "email": "rahul@example.com"
+  }'
+```
+
+Full request:
+
+```json
+{
+  "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6...firebase_id_token...",
+  "fullName": "Rahul Verma",
+  "email": "rahul@example.com"
+}
+```
+
+Full response:
+
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "userId": 2,
+    "role": "PARTNER",
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9.access.token",
+    "refreshToken": "eyJhbGciOiJIUzI1NiJ9.refresh.token"
+  }
+}
+```
+
 ### Refresh Token
 
 Endpoint:

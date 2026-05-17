@@ -15,6 +15,17 @@ Content-Type: application/json
 
 Auth APIs are public. WebSocket endpoints are documented separately in `docs/architecture.md`.
 
+The payment service supports three gateways: Razorpay, Paytm, and Cashfree.
+Set the `paymentGateway` field to one of: `RAZORPAY`, `PAYTM`, `CASHFREE`.
+
+Required environment variables per gateway:
+
+| Gateway | Variables |
+|---|---|
+| Razorpay | `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET` |
+| Paytm | `PAYTM_MERCHANT_ID`, `PAYTM_MERCHANT_KEY`, `PAYTM_BASE_URL` |
+| Cashfree | `CASHFREE_APP_ID`, `CASHFREE_SECRET_KEY`, `CASHFREE_BASE_URL` |
+
 ### Create Payment Order
 
 Endpoint:

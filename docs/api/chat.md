@@ -112,17 +112,24 @@ Full response:
 Endpoint:
 
 ```http
-GET /api/chats/messages/{roomId}
+GET /api/chats/messages/{roomId}?page=0&size=50
 ```
 
-API name: Get messages for a room.
+API name: Get paginated messages for a room (most recent first).
 
 Curl:
 
 ```bash
-curl -X GET http://localhost:8080/api/chats/messages/TASK_1 \
+curl -X GET "http://localhost:8080/api/chats/messages/TASK_1?page=0&size=50" \
   -H "Authorization: Bearer <accessToken>"
 ```
+
+Query parameters:
+
+| Param | Type | Default | Description |
+|---|---|---|---|
+| page | int | 0 | Zero-based page number |
+| size | int | 50 | Messages per page |
 
 Full request:
 
@@ -153,4 +160,40 @@ Full response:
     }
   ]
 }
+```
+
+### WebSocket Events
+
+The chat service uses STOMP over WebSocket. Connect to `ws://localhost:8080/ws` with SockJS.
+
+| Destination | Direction | Description |
+|---|---|---|
+| `/app/chat.send` | Client -> Server | Send a message |
+| `/app/chat.typing` | Client -> Server | Typing indicator |
+| `/app/chat.delivered` | Client -> Server | Mark messages as delivered |
+| `/app/chat.read` | Client -> Server | Mark a message as read |
+| `/topic/chat/{roomId}` | Server -> Client | New messages broadcast |
+| `/topic/chat/{roomId}/typing` | Server -> Client | Typing indicator broadcast |
+| `/topic/chat/{roomId}/delivered` | Server -> Client | Delivery confirmation broadcast |
+| `/topic/chat/{roomId}/read` | Server -> Client | Read receipt broadcast |
+
+Mark delivered payload:
+
+```json
+{
+  "roomId": "TASK_1",
+  "senderId": 1
+}
+```
+
+Mark read payload (messageId in `content` field):
+
+```json
+{
+  "roomId": "TASK_1",
+  "content": "msg_1"
+}
+```
+
+Delivery and read statuses are persisted to MongoDB (`deliveredAt`, `readAt` timestamps).
 ```

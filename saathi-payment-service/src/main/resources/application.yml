@@ -13,6 +13,17 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+razorpay:
+  key-id: ${RAZORPAY_KEY_ID:}
+  key-secret: ${RAZORPAY_KEY_SECRET:}
+paytm:
+  merchant-id: ${PAYTM_MERCHANT_ID:}
+  merchant-key: ${PAYTM_MERCHANT_KEY:}
+  base-url: ${PAYTM_BASE_URL:https://securegw-stage.paytm.in}
+cashfree:
+  app-id: ${CASHFREE_APP_ID:}
+  secret-key: ${CASHFREE_SECRET_KEY:}
+  base-url: ${CASHFREE_BASE_URL:https://sandbox.cashfree.com}
 eureka:
   client:
     service-url:

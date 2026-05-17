@@ -5,12 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record ChatSendRequest(
-        @NotBlank String roomId,
-        @NotNull Long taskId,
-        @NotNull Long senderId,
-        @NotBlank String senderRole,
-        @NotNull MessageType messageType,
-        String content,
-        String attachmentUrl
-) {
-}
+    @NotBlank String roomId,
+    @NotNull Long taskId,
+    @NotNull Long senderId,
+    @NotBlank String senderRole,
+    @NotNull MessageType messageType,
+    String content,
+    String attachmentUrl) {}

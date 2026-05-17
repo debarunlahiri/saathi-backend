@@ -13,6 +13,24 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+  mail:
+    host: ${SMTP_HOST:smtp.gmail.com}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+firebase:
+  service-account:
+    path: ${FIREBASE_SERVICE_ACCOUNT_PATH:classpath:firebase-service-account.json}
+sms:
+  api-url: ${SMS_API_URL:}
+  api-key: ${SMS_API_KEY:}
+  sender-id: ${SMS_SENDER_ID:SAATHI}
+whatsapp:
+  phone-number-id: ${WHATSAPP_PHONE_NUMBER_ID:}
+  access-token: ${WHATSAPP_ACCESS_TOKEN:}
 eureka:
   client:
     service-url:

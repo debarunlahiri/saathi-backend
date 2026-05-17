@@ -13,6 +13,9 @@ spring:
     hibernate:
       ddl-auto: validate
     open-in-view: false
+firebase:
+  service-account:
+    path: ${FIREBASE_SERVICE_ACCOUNT_PATH:classpath:firebase-service-account.json}
 eureka:
   client:
     service-url:
